@@ -56,6 +56,7 @@ function viewAllDepos() {
             console.log(err);
             return;
         }
+        console.log("\n");
         console.table(rows);
     });
     handleStartQuest();
@@ -68,6 +69,7 @@ function viewAllRoles() {
             console.log(err);
             return;
         }
+        console.log("\n");
         console.table(rows);
     });
     handleStartQuest();
@@ -80,6 +82,7 @@ function viewAllEmployees() {
             console.log(err);
             return;
         }
+        console.log("\n");
         console.table(rows);
     });
     handleStartQuest();
