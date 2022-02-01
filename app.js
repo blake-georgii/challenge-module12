@@ -5,25 +5,26 @@ const cTable = require('console.table');
 const startQuestion = [
     {
         type: 'list',
-        name: 'startChoice',
-        message: 'Day:',
-        choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee role', 'Quit']
+        name: 'answer',
+        message: 'What would you like to do?',
+        choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee role', 'Quit', new inquirer.Separator()]
     }
 ];
 
-function handleStartQuest({ startChoice }) {
-
-    switch (startChoice) {
+async function handleStartQuest() {
+    const startChoice = await inquirer.prompt(startQuestion);
+    console.log(startChoice);
+    switch (startChoice.answer) {
         case 'View all departments':
-            viewAllDepo();
+            viewAllDepos();
             break;
 
         case 'View all roles':
-
+            viewAllRoles();
             break;
 
         case 'View all employees':
-
+            viewAllEmployees();
             break;
 
         case 'Add a department':
@@ -48,7 +49,7 @@ function handleStartQuest({ startChoice }) {
     }
 }
 
-function viewAllDepo() {
+function viewAllDepos() {
     const sql = `SELECT * FROM departments`;
     db.query(sql, (err, rows) => {
         if (err) {
@@ -57,12 +58,11 @@ function viewAllDepo() {
         }
         console.table(rows);
     });
+    handleStartQuest();
 }
 
 db.connect(err => {
     if (err) throw err;
     console.log('Database connected.');
-    inquirer.prompt(startQuestion)
-        .then(answer => { handleStartQuest(answer) })
-        .catch(err => { console.log(err) })
+    handleStartQuest()
 });
