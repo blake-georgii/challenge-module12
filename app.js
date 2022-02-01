@@ -31,11 +31,10 @@ async function handleStartQuest() {
             break;
 
         case 'Add a role':
-
+            addRole();
             break;
 
         case 'Add an employee':
-
             break;
 
         case 'Update an employee role':
@@ -43,7 +42,7 @@ async function handleStartQuest() {
             break;
 
         case 'Quit':
-            console.log('Thanks for using the Deparment Mangager!');
+            console.log('Thanks for using the Department Manager!');
             break;
     }
 }
@@ -89,10 +88,10 @@ function viewAllEmployees() {
 
 async function addDepo() {
     const newDepo = await inquirer.prompt([{
-            type: 'input',
-            name: 'name',
-            message: 'What is the name of the department?'
-        }]);
+        type: 'input',
+        name: 'name',
+        message: 'What is the name of the department?'
+    }]);
 
     const sql = `INSERT INTO departments(depo_name) VALUES (?)`;
     db.query(sql, newDepo.name, (err, rows) => {
@@ -102,6 +101,43 @@ async function addDepo() {
         }
         console.log("\n" + `Added ${newDepo.name} to departments`);
     });
+    handleStartQuest();
+}
+
+async function addRole() {
+    db.execute('SELECT * FROM departments', (err, res) => {
+        console.log("\n")
+        console.table(res);
+    });
+    const newRole = await inquirer.prompt([
+        {
+            type: 'input',
+            message: `Input department id the new role belongs to `,
+            name: 'roleDepartment',
+        },
+        {
+            type: 'input',
+            name: 'title',
+            message: 'What is the title of this role?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary of this role?'
+        },
+    ]);
+
+    const params = [newRole.title, parseFloat(newRole.salary), parseInt(newRole.roleDepartment)]
+
+    const sql = `INSERT INTO roles(title, salary, department_id)  VALUES (?, ?, ?)`;
+    db.query(sql, params, (err, rows) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("\n" + `Added ${newRole.title} to departments`);
+    });
+
     handleStartQuest();
 }
 
