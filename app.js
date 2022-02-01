@@ -13,7 +13,6 @@ const startQuestion = [
 
 async function handleStartQuest() {
     const startChoice = await inquirer.prompt(startQuestion);
-    console.log(startChoice);
     switch (startChoice.answer) {
         case 'View all departments':
             viewAllDepos();
@@ -28,7 +27,7 @@ async function handleStartQuest() {
             break;
 
         case 'Add a department':
-
+            addDepo();
             break;
 
         case 'Add a role':
@@ -84,6 +83,24 @@ function viewAllEmployees() {
         }
         console.log("\n");
         console.table(rows);
+    });
+    handleStartQuest();
+}
+
+async function addDepo() {
+    const newDepo = await inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: 'What is the name of the department?'
+        }]);
+
+    const sql = `INSERT INTO departments(depo_name) VALUES (?)`;
+    db.query(sql, newDepo.name, (err, rows) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("\n" + `Added ${newDepo.name} to departments`);
     });
     handleStartQuest();
 }
