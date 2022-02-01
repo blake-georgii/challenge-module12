@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "start": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,8 +19,8 @@
   },
   "homepage": "https://github.com/blake-georgii/challenge-module12#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
     "inquirer": "^8.2.0",
-    "mysql2": "^2.3.3",
-    "sequelize": "^6.15.0"
+    "mysql2": "^2.3.3"
   }
 }
