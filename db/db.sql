@@ -1,3 +1,3 @@
-DROP DATABASE IF EXISTS departmentApp;
-CREATE DATABASE departmentApp;
-USE departmentApp;
+DROP DATABASE IF EXISTS departmentapp;
+CREATE DATABASE departmentapp;
+USE departmentapp;
