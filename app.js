@@ -102,14 +102,14 @@ async function addDepo() {
 }
 
 async function addRole() {
-    db.execute('SELECT * FROM departments', (err, res) => {
+    db.query('SELECT * FROM departments', (err, rows) => {
         console.log("\n")
-        console.table(res);
+        console.table(rows);
     });
     const newRole = await inquirer.prompt([
         {
             type: 'input',
-            message: `Input department id the new role belongs to `,
+            message: `Input department id the new role belongs to from list above: `,
             name: 'roleDepartment',
         },
         {
@@ -139,12 +139,12 @@ async function addRole() {
 }
 //first name, last name, role, and manager
 async function addEmployee() {
-    db.execute('SELECT * FROM employees', (err, res) => {
+    db.query('SELECT * FROM employees', (err, res) => {
         console.log("\n")
         console.table(res);
     });
 
-    db.execute('SELECT * FROM roles', (err, res) => {
+    db.query('SELECT * FROM roles', (err, res) => {
         console.log("\n")
         console.table(res);
     });
@@ -189,14 +189,15 @@ async function addEmployee() {
 }
 
 async function updateEmployee(){
-    db.execute('SELECT * FROM employees', (err, res) => {
+
+    db.query('SELECT * FROM employees', (err, rows) => {
         console.log("\n")
-        console.table(res);
+        console.table(rows);
     });
 
-    db.execute('SELECT * FROM roles', (err, res) => {
+    db.query('SELECT * FROM roles', (err, rows) => {
         console.log("\n")
-        console.table(res);
+        console.table(rows);
     });
 
     const newEmployeeRole = await inquirer.prompt([
