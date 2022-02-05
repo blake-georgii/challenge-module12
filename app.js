@@ -132,7 +132,7 @@ async function addRole() {
             console.log(err);
             return;
         }
-        console.log("\n" + `Added ${newRole.title} to departments`);
+        console.log("\n" + `Added ${newRole.title} to roles list`);
     });
 
     handleStartQuest();
@@ -182,7 +182,47 @@ async function addEmployee() {
             console.log(err);
             return;
         }
-        console.log("\n" + `Added ${newEmployee.first_name} ${newEmployee.last_name} to departments`);
+        console.log("\n" + `Added ${newEmployee.first_name} ${newEmployee.last_name} to employee list`);
+    });
+
+    handleStartQuest();
+}
+
+async function updateEmployee(){
+    db.execute('SELECT * FROM employees', (err, res) => {
+        console.log("\n")
+        console.table(res);
+    });
+
+    db.execute('SELECT * FROM roles', (err, res) => {
+        console.log("\n")
+        console.table(res);
+    });
+
+    const newEmployeeRole = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'id',
+            message: `Input employee Id you would like to update from list above: `,
+            
+        },
+        {
+            type: 'input',
+            name: 'roles_id',
+            message: `Input the new role Id from list above:`
+        }
+    ]);
+
+    const params = [newEmployeeRole.roles_id, newEmployeeRole.id];
+
+    const sql = `UPDATE employees SET roles_id = ? WHERE id = ?`;
+
+    db.query(sql, params, (err, rows) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("\n" + `Updated Employee`);
     });
 
     handleStartQuest();
