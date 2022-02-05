@@ -35,14 +35,11 @@ async function handleStartQuest() {
             break;
 
         case 'Add an employee':
+            addEmployee();
             break;
 
         case 'Update an employee role':
-
-            break;
-
-        case 'Quit':
-            console.log('Thanks for using the Department Manager!');
+            updateEmployee();
             break;
     }
 }
@@ -136,6 +133,56 @@ async function addRole() {
             return;
         }
         console.log("\n" + `Added ${newRole.title} to departments`);
+    });
+
+    handleStartQuest();
+}
+//first name, last name, role, and manager
+async function addEmployee() {
+    db.execute('SELECT * FROM employees', (err, res) => {
+        console.log("\n")
+        console.table(res);
+    });
+
+    db.execute('SELECT * FROM roles', (err, res) => {
+        console.log("\n")
+        console.table(res);
+    });
+
+    const newEmployee = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'manager_id',
+            message: `Input id of new employee's manager from above`,
+            
+        },
+        {
+            type: 'input',
+            name: 'roles_id',
+            message: `Input id of new employee's role from list above`
+        },
+        {
+            type: 'input',
+            name: 'first_name',
+            message: `What is the employee's first name?`
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: `What is the employee's last name?`
+        }
+    ]);
+
+    const params = [newEmployee.first_name, newEmployee.last_name, newEmployee.roles_id, newEmployee.manager_id];
+
+    const sql = `INSERT INTO employees(first_name, last_name, roles_id, manager_id)  VALUES (?, ?, ?, ?)`;
+
+    db.query(sql, params, (err, rows) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("\n" + `Added ${newEmployee.first_name} ${newEmployee.last_name} to departments`);
     });
 
     handleStartQuest();
