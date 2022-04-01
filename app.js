@@ -11,42 +11,44 @@ const startQuestion = [
     }
 ];
 
-async function handleStartQuest() {
-    const startChoice = await inquirer.prompt(startQuestion);
-    switch (startChoice.answer) {
-        case 'View all departments':
-            viewAllDepos();
-            break;
+function handleStartQuest() {
 
-        case 'View all roles':
-            viewAllRoles();
-            break;
 
-        case 'View all employees':
-            viewAllEmployees();
-            break;
+    inquirer.prompt(startQuestion).then(startChoice => {
+        switch (startChoice.answer) {
+            case 'View all departments':
+                viewAllDepos();
+                break;
 
-        case 'Add a department':
-            addDepo();
-            break;
+            case 'View all roles':
+                viewAllRoles();
+                break;
 
-        case 'Add a role':
-            addRole();
-            break;
+            case 'View all employees':
+                viewAllEmployees();
+                break;
 
-        case 'Add an employee':
-            addEmployee();
-            break;
+            case 'Add a department':
+                addDepo();
+                break;
 
-        case 'Update an employee role':
-            updateEmployee();
-            break;
-    }
+            case 'Add a role':
+                addRole();
+                break;
+
+            case 'Add an employee':
+                addEmployee();
+                break;
+
+            case 'Update an employee role':
+                updateEmployee();
+                break;
+        }
+    })
 }
 
 function viewAllDepos() {
-    const sql = `SELECT * FROM departments`;
-    db.query(sql, (err, rows) => {
+    db.query(`SELECT * FROM departments`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -58,8 +60,7 @@ function viewAllDepos() {
 }
 
 function viewAllRoles() {
-    const sql = `SELECT * FROM roles`;
-    db.query(sql, (err, rows) => {
+    db.query(`SELECT * FROM roles`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -71,8 +72,7 @@ function viewAllRoles() {
 }
 
 function viewAllEmployees() {
-    const sql = `SELECT * FROM employees`;
-    db.query(sql, (err, rows) => {
+    db.query(`SELECT * FROM employees`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -90,8 +90,7 @@ async function addDepo() {
         message: 'What is the name of the department?'
     }]);
 
-    const sql = `INSERT INTO departments(depo_name) VALUES (?)`;
-    db.query(sql, newDepo.name, (err, rows) => {
+    db.query(`INSERT INTO departments(depo_name) VALUES (?)`, newDepo.name, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -154,7 +153,7 @@ async function addEmployee() {
             type: 'input',
             name: 'manager_id',
             message: `Input id of new employee's manager from above`,
-            
+
         },
         {
             type: 'input',
@@ -188,7 +187,7 @@ async function addEmployee() {
     handleStartQuest();
 }
 
-async function updateEmployee(){
+async function updateEmployee() {
 
     db.query('SELECT * FROM employees', (err, rows) => {
         console.log("\n")
@@ -205,7 +204,7 @@ async function updateEmployee(){
             type: 'input',
             name: 'id',
             message: `Input employee Id you would like to update from list above: `,
-            
+
         },
         {
             type: 'input',
