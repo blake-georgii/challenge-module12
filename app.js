@@ -43,6 +43,8 @@ function handleStartQuest() {
             case 'Update an employee role':
                 updateEmployee();
                 break;
+            case 'Quit':
+                process.exit();
         }
     })
 }
